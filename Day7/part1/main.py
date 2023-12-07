@@ -52,58 +52,25 @@ class Hand:
                 return cardss[self.cards[1]] < cardss[other.cards[1]]
         else:
             return cardss[self.cards[0]] < cardss[other.cards[0]]
-        
+
 def checkhand(hand):
-    localhand = copy.deepcopy(hand)
-    hand.cards = ''.join(sorted(hand.cards, key=str.lower))
-    if hand.cards.count(hand.cards[0]) == 5:
-        five.append(localhand)
-    elif hand.cards.count(hand.cards[0]) == 4:
-        four.append(localhand)
-    elif hand.cards.count(hand.cards[0]) == 3:
-        hand.cards = hand.cards.replace(hand.cards[0],"")
-        if hand.cards.count(hand.cards[0]) == 2:
-            full.append(localhand)
-        else:
-            three.append(localhand)
-    elif hand.cards.count(hand.cards[0]) == 2:
-        hand.cards = hand.cards.replace(hand.cards[0],"")
-        if  hand.cards.count(hand.cards[0]) == 3:
-            full.append(localhand)
-        elif (hand.cards.count(hand.cards[0]) == 2 ) or (hand.cards.count(hand.cards[1]) == 2 ) or (hand.cards.count(hand.cards[2]) == 2 ):
-            two.append(localhand)
-        else:
-            one.append(localhand)
-    elif hand.cards.count(hand.cards[0]) == 1:
-        hand.cards = hand.cards.replace(hand.cards[0],"")
-        if hand.cards.count(hand.cards[0]) == 4:
-            four.append(localhand)
-        elif hand.cards.count(hand.cards[0]) == 3:
-            hand.cards = hand.cards.replace(hand.cards[0],"")
-            if hand.cards.count(hand.cards[0]) == 2:
-                full.append(localhand)
-            else:
-                three.append(localhand)
-        elif hand.cards.count(hand.cards[0]) == 2:
-            hand.cards = hand.cards.replace(hand.cards[0],"")
-            if  hand.cards.count(hand.cards[0]) == 3:
-                full.append(localhand)
-            elif (hand.cards.count(hand.cards[0]) == 2 ) or (hand.cards.count(hand.cards[1]) == 2 ):
-                two.append(localhand)
-            else:
-                one.append(localhand)
-        elif hand.cards.count(hand.cards[0]) == 1:
-            hand.cards = hand.cards.replace(hand.cards[0],"")
-            if hand.cards.count(hand.cards[0]) == 3:
-                three.append(localhand)
-            elif hand.cards.count(hand.cards[0]) == 2:
-                    two.append(localhand)
-            elif hand.cards.count(hand.cards[0]) == 1:
-                hand.cards = hand.cards.replace(hand.cards[0],"")
-                if hand.cards.count(hand.cards[0]) == 2:
-                    one.append(localhand)
-                else:
-                    high.append(localhand)
+    counts = {char: hand.cards.count(char) for char in set(hand.cards)}
+    uniques = len(set(hand.cards))
+
+    if any(count == 5 for count in counts.values()):
+        five.append(hand)
+    elif any(count == 4 for count in counts.values()):
+        four.append(hand)
+    elif uniques == 2 and any(count == 3 for count in counts.values()):
+        full.append(hand)
+    elif any(count == 3 for count in counts.values()):
+        three.append(hand)
+    elif uniques == 3 and any(count == 2 for count in counts.values()):
+        two.append(hand)
+    elif uniques == 4:
+        one.append(hand)
+    else:
+        high.append(hand)
 
 def sortlists():
     five.sort()
@@ -145,7 +112,7 @@ def calculateranksum():
         # print("Rank: "+ str(rank) + ";" + str(element))
         ranksum += rank * element.bet
         rank += 1
-    
+
     print(ranksum)
 
 def main():
