@@ -20,5 +20,6 @@
 
 [Day 9: Mirage Maintenance](https://adventofcode.com/2023/day/9)
 
+[Day 10: Pipe Maze](https://adventofcode.com/2023/day/10)
 
 [^1]:[About advent of code](https://adventofcode.com/about)
